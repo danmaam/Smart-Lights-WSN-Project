@@ -4,7 +4,7 @@
 #define TREE_DEPTH 3
 #define toggle_bitmask 7
 #define network_size 10
-#define single_iteration 5
+#define single_iteration 12
 
 module lightsC @safe() {
 	uses {
@@ -31,6 +31,7 @@ implementation {
 
 	uint8_t nextaction = 0;
 	uint8_t current_iteration = 0; //at zero turns off all the leds, a single pattern runs for 10 iterations
+	uint8_t nextaction_aux = 0;
 
 	//variables used for acking purposes
 	am_addr_t last_send;
@@ -96,33 +97,34 @@ implementation {
 
 	void crossNextLed() {
 		am_addr_t next_hop = routingTable[current_node - 1];
-		uint8_t comm = nextaction;
+		uint8_t comm = nextaction_aux;
 		if (current_node <= 10) {
 			if (current_node % 2 == 0) {
-				comm = 1 ^ nextaction;
+				comm = 1 ^ nextaction_aux;
 			}
 			sendPayload(comm, current_node, TOS_NODE_ID, next_hop);
 			current_node++;
 		}
+		else resettingLights = TRUE;
 
 	}
 
 	void triangleNextLed() {
 		am_addr_t next_hop = routingTable[current_node - 1];
 		uint8_t comm;
-		if (nextaction == 0) {
+		if (nextaction_aux == 0) {
 			if (current_node == 2 || current_node == 3 || current_node == 4 || current_node == 6) comm = 1;
 			else comm = 0;
 		}
-		else if (nextaction == 1) {
+		else if (nextaction_aux == 1) {
 			if (current_node == 2 || current_node == 5 || current_node == 8 || current_node == 6) comm = 1;
 			else comm = 0;
 		}
-		else if (nextaction == 2) {
+		else if (nextaction_aux == 2) {
 			if (current_node == 8 || current_node == 9 || current_node == 10 || current_node == 6) comm = 1;
 			else comm = 0;
 		}
-		else if (nextaction == 3) {
+		else if (nextaction_aux == 3) {
 			if (current_node == 4 || current_node == 7 || current_node == 10 || current_node == 6) comm = 1;
 			else comm = 0;
 		}
@@ -130,16 +132,17 @@ implementation {
 			sendPayload(comm, current_node, TOS_NODE_ID, next_hop);
 			current_node++;
 		}
+		else resettingLights = TRUE;
 	}
 
 	void startTriangularSwitch() {
-		nextaction = (nextaction + 1) % 4;
+		nextaction_aux = (nextaction_aux + 1) % 4;
 		current_node = 2;
 		triangleNextLed();
 	}
 
 	void startCrossSwitch() {
-		nextaction = (1 & nextaction) ^ 1;
+		nextaction_aux = (1 & nextaction_aux) ^ 1;
 		current_node = 2;
 		crossNextLed();
 	}
@@ -167,20 +170,26 @@ implementation {
 			printf("Changing pattern\n");
 			printfflush();
 			current_pattern = (current_pattern + 1) % 3;
-			nextaction = 1;
-			resettingLights = TRUE;
-			startLedToggling();
+			//nextaction = 1;
+			//resettingLights = TRUE;
+			//startLedToggling();
 		}
 		else {
-			//need to reset lights before change
-			if (current_pattern == TOGGLE) {
+			if (resettingLights == TRUE) {
+				nextaction = 1;
 				startLedToggling();
 			}
-			else if (current_pattern == TRIANGLE_SWITCH) {
-				startTriangularSwitch();
-			}
-			else if (current_pattern == CROSS_SWITCH) {
-				startCrossSwitch();
+			else {
+			//need to reset lights before change
+				if (current_pattern == TOGGLE) {
+					startLedToggling();
+				}
+				else if (current_pattern == TRIANGLE_SWITCH) {
+					startTriangularSwitch();
+				}
+				else if (current_pattern == CROSS_SWITCH) {
+					startCrossSwitch();
+				}
 			}
 		}
 		current_iteration = (current_iteration + 1) % single_iteration;
