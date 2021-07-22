@@ -8,13 +8,19 @@ typedef nx_struct light_msg {
   nx_uint8_t hop_count; //maximum number of hops
 } light_msg_t;
 
+typedef nx_struct confirm_msg {
+  nx_uint8_t dst;
+} confirm_msg_t;
+
 enum {
   AM_MSG = 6,
-
+  COMMAND = 0,
+  CONFIRM = 1,
 
   TOGGLE = 0,
+  CROSS_SWITCH = 1,
+  TRIANGLE_SWITCH = 2,
 };
-
 
 
 #endif
