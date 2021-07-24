@@ -1,0 +1,70 @@
+//CONTROLLER LOG
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | Changing pattern to 0
+ID: 1 | ITERATION: 1, PATTERN: 1
+ID: 1 | Sending to 2 packet for dst: 2
+ID: 1 | Received confirmation from 2
+ID: 1 | Sending to 2 packet for dst: 3
+ID: 1 | Received confirmation from 3
+ID: 1 | Sending to 2 packet for dst: 4
+ID: 1 | Received confirmation from 4
+ID: 1 | Sending to 5 packet for dst: 5
+ID: 1 | Received confirmation from 5
+ID: 1 | Sending to 5 packet for dst: 6
+ID: 1 | Received confirmation from 6
+ID: 1 | Sending to 5 packet for dst: 7
+ID: 1 | Received confirmation from 7
+ID: 1 | Sending to #8 packet for dst: 8
+ID: 1 | Received confirmation from 8
+ID: 1 | Sending to 8 packet for dst: 9
+ID: 1 | Received confirmation from 9
+ID: 1 | Sending to #8 packet for dst: 10
+ID: 1 | Received confirmation from 10
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | Turning all lights off
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | ITERATION: 2, PATTERN: 1
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | Turning all lights off
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | ITERATION: 3, PATTERN: 1
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | Turning all lights off
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | ITERATION: 4, PATTERN: 1
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | Turning all lights off
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | ITERATION: 5, PATTERN: 1
+//SAME FROM 5 TO 22
+ID: 1 | Received confirmation from 10
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | Changing pattern to 1
+ID: 1 | Turning  all lights off
+//SAME FROM 5 TO 22
+ID: 1 | Timer fired. Modifying lights.
+ID: 1 | ITERATION: 1, PATTERN: 2
+
+
+//ROUTING LOGS
+//INCLUDED ONLY OF 2 SINCE THEY ARE THE SAME FOR THE OTHER BULBS
+ID: 2 | Received from 1 : dst: 2 , action: 0
+ID: 2 | Changing my leds!
+ID: 2 | Sending confirmation to 1, next hop: 1 //confirmation of 2 led change
+ID: 2 | Received from 1 : dst: 3 , action: 1
+ID: 2 | Redirecting payload to 3
+ID: 2 | Sending to 3 packet for dst: 3
+ID: 2 | Redirecting confirmation //redirecting confirmation from 3 to 1
+ID: 2 | Sending confirmation to 1, next-hop 1
+ID: 2 | Received from 1 : dst: 4 , action: 0
+ID: 2 | Redirecting payload to 3
+ID: 2 | Sending to 3 packet for dst: 4
+ID: 2 | Redirecting confirmation //redirecting confirmation from 4 to 1
+ID: 2 | Sending confirmation to 1, next-hop: 1
