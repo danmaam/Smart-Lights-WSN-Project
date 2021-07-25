@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
+    <timestamp>60FCB341L</timestamp>
     <platform>telosb</platform>
-    <deluge_support>no</deluge_support>
+    <username>user</username>
+    <hostname>user-iot</hostname>
     <userhash>2C00343AL</userhash>
     <appname>controllerAppC</appname>
-    <username>user</username>
-    <timestamp>60FCB1A4L</timestamp>
-    <uidhash>C5FC27FDL</uidhash>
-    <hostname>user-iot</hostname>
+    <uidhash>BDEC98BFL</uidhash>
+    <deluge_support>no</deluge_support>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245A214314000396A
@@ -655,7 +655,7 @@
 :1068200092110F4E3F530F5F1D4F20114E4E4F439D
 :10683000B012A8679253921130411E4292110F4E2E
 :106840003F530F5F1D4F20113E900B00072C4E4E03
-:106850005F43B012A867925392113041C243841132
+:106850005F43B012A867925392113041D243841122
 :1068600030411E4292110F4E3F530F5F1D4F2011BA
 :106870005F4280113E900B00092C1EB301205FE3A4
 :106880004E4EB012A867925392113041D2438411F8

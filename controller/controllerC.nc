@@ -1,8 +1,6 @@
 #include "Timer.h"
 #include "lights.h"
 #include "printf.h"
-#define TREE_DEPTH 3
-#define toggle_bitmask 7
 #define network_size 10
 #define single_iteration 6
 
@@ -62,7 +60,7 @@ implementation {
 			sendPayload(1, current_node, next_hop);
 			current_node++;
 		}
-		else resettingLights = FALSE;
+		else resettingLights = TRUE;
 	}
 
 	void startLedToggling() {
@@ -171,7 +169,6 @@ implementation {
 			else {
 				printf("ID: %u | ITERATION: %u, PATTERN: %u\n", TOS_NODE_ID, current_iteration, current_pattern);
 				printfflush();
-			//need to reset lights before change
 				if (current_pattern == TOGGLE) {
 					startLedToggling();
 				}

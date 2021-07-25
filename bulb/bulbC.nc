@@ -3,8 +3,6 @@
 #include "printf.h"
 #define TREE_DEPTH 3
 #define toggle_bitmask 7
-#define network_size 10
-#define single_iteration 6
 
 module bulbC @safe() {
 	uses {
@@ -37,7 +35,7 @@ implementation {
 		confirm_msg_t* confirm_msg = (confirm_msg_t*) call Packet.getPayload(&packet, sizeof(confirm_msg_t));
 		am_addr_t next_hop;
 
-		if (TOS_NODE_ID == 2 || TOS_NODE_ID == 5 || TOS_NODE_ID == 8) next_hop = 1;
+		if (TOS_NODE_ID % TREE_DEPTH == 2) next_hop = 1;
 		else next_hop = TOS_NODE_ID - 1;
 
 		printf("ID: %u | Sending confirmation, next-hop: %u\n", TOS_NODE_ID, next_hop);
@@ -55,7 +53,7 @@ implementation {
 		light_msg_t* payload = (light_msg_t*) call Packet.getPayload(&packet, sizeof(light_msg_t));
 		am_addr_t addr;
 		//setting next hop
-		if (TOS_NODE_ID % 3 == 1) addr = TOS_NODE_ID - 1; //end of the tree of depth 3
+		if (TOS_NODE_ID % TREE_DEPTH == 1) addr = TOS_NODE_ID - 1; //end of the tree of depth 3
 		else if (dst > TOS_NODE_ID) addr = TOS_NODE_ID + 1;
 		else addr = TOS_NODE_ID - 1;
 
