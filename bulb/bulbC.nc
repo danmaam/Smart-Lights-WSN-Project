@@ -63,9 +63,9 @@ implementation {
 
 		payload -> action = action;
 		payload -> dst = dst;
+		payload -> snd = snd;
 
-		printf("ID: %u | Sending to %u packet for dst: %u \n", TOS_NODE_ID, addr, dst);
-		printfflush();
+
 		call PacketAcknowledgements.requestAck(&packet);
 		if (call AMSend.send(addr, &packet, sizeof(light_msg_t)) == SUCCESS) {
 			locked = TRUE;
@@ -121,7 +121,7 @@ implementation {
 	event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
 		if (len == sizeof(confirm_msg_t)) {
 			confirm_msg_t *msg = (confirm_msg_t*) payload;
-			printf("ID: %u | Redirecting confirmation\n", TOS_NODE_ID);
+			printf("ID: %u | Redirecting confirmation of %u\n", TOS_NODE_ID, msg -> snd);
 			printfflush();
 			sendConfirmation(msg -> snd);
 			return bufPtr;
@@ -129,13 +129,15 @@ implementation {
 
 		else if (len == sizeof(light_msg_t)) {
 			light_msg_t* msg = (light_msg_t*)payload;
-			printf("ID: %u | Received dst: %u , action: %u \n", TOS_NODE_ID, msg->dst, msg->action);
+			printf("ID: %u | Received from %u - dst: %u , action: %u \n", TOS_NODE_ID, msg->snd, msg->dst, msg->action);
 			printfflush();
 			if (TOS_NODE_ID == msg->dst) { 	//unicast command message
 				//message correctly received. turning on or off leds
 				printf("ID: %u | Changing my leds!\n", TOS_NODE_ID);
 				printfflush();
 				call Leds.set(msg->action * toggle_bitmask);
+				printf("ID: %u | Sending confirmation\n", TOS_NODE_ID);
+				printfflush();
 				sendConfirmation(TOS_NODE_ID);
 			}
 			else {

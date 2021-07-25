@@ -2,6 +2,7 @@
 #define RADIO_COUNT_TO_LEDS_H
 
 typedef nx_struct light_msg {
+  nx_uint8_t snd;
   nx_uint8_t action; //1 to turn on light, 0 to turn off light
   nx_uint8_t dst; //the destination light bulb
 } light_msg_t;

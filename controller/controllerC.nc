@@ -2,7 +2,7 @@
 #include "lights.h"
 #include "printf.h"
 #define network_size 10
-#define single_iteration 6
+#define single_iteration 4
 
 module controllerC @safe() {
 	uses {
@@ -34,14 +34,15 @@ implementation {
 
 	//reserved for led switching
 	am_addr_t current_node;
-	uint8_t current_pattern = 0;
+	uint8_t current_pattern = 2;
 
 	//code to send command messages from the controller
 	void sendPayload(nx_uint8_t action, nx_uint8_t dst, am_addr_t addr) {
 		light_msg_t* payload = (light_msg_t*) call Packet.getPayload(&packet, sizeof(light_msg_t));
+		payload -> snd = TOS_NODE_ID;
 		payload -> action = action;
 		payload -> dst = dst;
-		printf("ID: %u | Sending to %u packet for dst: %u \n", TOS_NODE_ID, addr, dst);
+		printf("CONTROLLER | Sending to %u packet for dst: %u \n", addr, dst);
 		printfflush();
 		call PacketAcknowledgements.requestAck(&packet);
 		if (call AMSend.send(addr, &packet, sizeof(light_msg_t)) == SUCCESS) {
@@ -76,8 +77,15 @@ implementation {
 			if (current_node % 2 == 0) {
 				comm = 1 ^ nextaction;
 			}
-			sendPayload(comm, current_node, next_hop);
-			current_node++;
+			if (comm != 0) {
+				sendPayload(comm, current_node, next_hop);
+				current_node++;
+			}
+			else {
+				current_node++;
+				crossNextLed();
+			}
+
 		}
 		else resettingLights = TRUE;
 
@@ -110,8 +118,15 @@ implementation {
 			else comm = 0;
 		}
 		if (current_node <= 10) {
-			sendPayload(comm, current_node, next_hop);
-			current_node++;
+			if (comm != 0) {
+				sendPayload(comm, current_node, next_hop);
+				current_node++;
+			}
+			else {
+				current_node++;
+				triangleNextLed();
+			}
+
 		}
 		else resettingLights = TRUE;
 	}
@@ -154,7 +169,7 @@ implementation {
 
 	void nextPattern() {
 		if (current_iteration == 0) {
-			printf("ID: %u | Changing pattern to %u\n", TOS_NODE_ID, current_pattern);
+			printf("CONTROLLER | Changing pattern to %u\n", current_pattern);
 			printfflush();
 			current_pattern = (current_pattern + 1) % 3;
 			current_iteration = (current_iteration + 1) % single_iteration;
@@ -162,12 +177,12 @@ implementation {
 		}
 		else {
 			if (resettingLights == TRUE) {
-				printf("ID: %u | Turning all lights off\n", TOS_NODE_ID);
+				printf("CONTROLLER | Turning all lights off\n");
 				printfflush();
 				turnOffAllLights();
 			}
 			else {
-				printf("ID: %u | ITERATION: %u, PATTERN: %u\n", TOS_NODE_ID, current_iteration, current_pattern);
+				printf("CONTROLLER | ITERATION: %u, PATTERN: %u\n", current_iteration, current_pattern);
 				printfflush();
 				if (current_pattern == TOGGLE) {
 					startLedToggling();
@@ -190,7 +205,7 @@ implementation {
 			return;
 		}
 		else {
-			printf("ID: %u | Timer fired. Modifying lights.\n", TOS_NODE_ID);
+			printf("CONTROLLER | Timer fired. Modifying lights.\n");
 			printfflush();
 			nextPattern();
 		}
@@ -202,7 +217,6 @@ implementation {
 			if (call PacketAcknowledgements.wasAcked(bufPtr)) {
 				//printf("Packed acked from %u\n", last_send);
 				//printfflush();
-				//continue the pattern
 			}
 			else {
 				//printf("Non acked message from %u\n", last_send);
@@ -221,7 +235,7 @@ implementation {
 	event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
 		if (len == sizeof(confirm_msg_t)) {
 			confirm_msg_t *msg = (confirm_msg_t*) payload;
-			printf("ID: %u | Received confirmation from %u\n", TOS_NODE_ID, msg -> snd);
+			printf("CONTROLLER | Received confirmation from %u\n", msg -> snd);
 			printfflush();
 			//continue with the current light pattern
 			if (resettingLights) {

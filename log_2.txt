@@ -1,0 +1,56 @@
+//controller log in a pattern round. this is from all lights on pattern for full explaination of working.
+//for some reason tinyos doesn't perform some printf
+
+CONTROLLER | Timer fired. Mobdifying lights.
+CONTROLLER |7 Changing pattern to 2
+CONTROLLER | Sending to6 2 packet for dst: 2
+CONTROLLER | Sending to 2 packet for dst: 3
+CONTROLLER | Received confirmation from 3
+CONTROLLER | S13ending to 2 packet for dst: ut4
+J:CONTROLLER | Received confirmation from 4
+CONTROLLER | S[ending to 5 packet for dst: 5
+CONTROLLER | Received confirmation from 5
+CONTROLLER | Sending to 5 packet for dst: 6
+bsCONTROLLER | Received confirmation from 6
+CONTROLLER | Sending to 5 packet for dst: 7
+WCONTROLLER | Received confirmation from 7
+CONTROLLER | Sending to 8 packet for dst: 8
+CONTROLLER | Received confirmation from 8
+CONTROLLER | Sending to 8 packet for dst: 9
+CONTROLLER | Received confirmation from 9
+CONTROLLER | Sbending to 8 packet for dst: 10
+CONTROLLER | Received confirmation from 10
+CONTROLLER | Timer fired. Mobdifying lights.
+CONTROLLER |7 Turning all lights off
+//same as before for message reception and confirmation send
+
+//full log of mote 2 and 3 in a pattern round to show how routing works.
+ID: 2 | Received from 1 - dst: 2 , action: 1
+ID: 2 | Changing my leds!
+ID: 2 | Sending confirmation
+ID: 2 | Sending confirmation, next-hop: 1
+ID: 2 | Received from 1 - dst: 3 , action: 1
+ID: 2 | Redirecting payload for 3
+ID: 2 | Redirecting confirmation of 3
+ID: 2 | Sending confirmation, next-hop: 1
+ID: 2 | Received from 1 - dst: 4 , action: 1
+ID: 2 | Redirecting payload for 4
+ID: 2 | Redirecting confirmation of 4
+ID: 2 | Sending cofirmation, next-hop: 1
+
+ID: 3 | Received from 2 - dst: 3 , action: 1
+ID: 3 | Changing my leds!
+ID: 3 | Sending confirmation
+ID: 3 | Sending confirmation, next-hop: 2
+ID: 3 | Received from 2 - dst: 4 , action: 1
+ID: 3 | Redirecting payload for 4
+ID: 3 | Redirecting confirmation of 4
+ID: 3 | Sending confirmation, next-hop: 2
+
+ID: 4 | Received from 3 - dst: 4 , action: 1
+ID: 4 | Changing my leds!
+ID: 4 | Sending confirmation
+ID: 4 | Sending confirmation, next-hop: 3
+
+
+
