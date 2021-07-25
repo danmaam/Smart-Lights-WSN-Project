@@ -2,7 +2,7 @@
 #include "lights.h"
 #include "printf.h"
 #define network_size 10
-#define single_iteration 4
+#define single_iteration 5
 
 module controllerC @safe() {
 	uses {

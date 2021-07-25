@@ -53,8 +53,8 @@ implementation {
 		light_msg_t* payload = (light_msg_t*) call Packet.getPayload(&packet, sizeof(light_msg_t));
 		am_addr_t addr;
 		//setting next hop
-		if (TOS_NODE_ID % TREE_DEPTH == 1) addr = TOS_NODE_ID - 1; //end of the tree of depth 3
-		else if (dst > TOS_NODE_ID) addr = TOS_NODE_ID + 1;
+		//if (TOS_NODE_ID % TREE_DEPTH == 1) addr = TOS_NODE_ID - 1; //end of the tree of depth 3
+		if (dst > TOS_NODE_ID) addr = TOS_NODE_ID + 1;
 		else addr = TOS_NODE_ID - 1;
 
 		//variables used for acking purposes
