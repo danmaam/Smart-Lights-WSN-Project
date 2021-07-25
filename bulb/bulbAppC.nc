@@ -1,13 +1,11 @@
 #include "lights.h"
 #define NEW_PRINTF_SEMANTICS
 
-configuration lightsAppC {}
+configuration bulbAppC {}
 implementation {
-	components MainC, lightsC as App, LedsC;
+	components MainC, bulbC as App, LedsC;
 	components new AMSenderC(AM_MSG);
 	components new AMReceiverC(AM_MSG);
-	components new TimerMilliC();
-	components new TimerMilliC() as NextSendTimer;
 	components ActiveMessageC;
 	components PrintfC;
 	components SerialStartC;
@@ -18,8 +16,6 @@ implementation {
     App.AMControl -> ActiveMessageC;
 	App.PacketAcknowledgements -> ActiveMessageC;
     App.Leds -> LedsC;
-    App.MilliTimer -> TimerMilliC;
-	App.NextSend -> NextSendTimer;
     App.Packet -> AMSenderC;
 }
 
