@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <timestamp>60FCC3BFL</timestamp>
-    <hostname>user-iot</hostname>
-    <platform>telosb</platform>
-    <userhash>2C00343AL</userhash>
     <username>user</username>
+    <platform>telosb</platform>
+    <uidhash>CE19D4ABL</uidhash>
     <appname>bulbAppC</appname>
-    <uidhash>2F9B5933L</uidhash>
     <deluge_support>no</deluge_support>
+    <userhash>2C00343AL</userhash>
+    <timestamp>60FDBB7BL</timestamp>
+    <hostname>user-iot</hostname>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A82457C143140003990
